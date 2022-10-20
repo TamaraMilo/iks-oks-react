@@ -1,0 +1,23 @@
+.buttons-div
+{
+    display: flex;
+    flex-direction: column;
+}
+.buttons-div button
+{
+    margin-top: 20px;
+    transition-duration: 5000ms;
+}
+.buttons-div button:hover
+{
+    background-color: #646cffaa;
+    
+}
+.home-main-div
+{
+    color: #4348a8;
+    display: flex;
+    flex-direction: column;
+    
+   
+}
