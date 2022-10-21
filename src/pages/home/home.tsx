@@ -2,7 +2,7 @@
 import React from "react";
 import { Window as KeplrWindow } from "@keplr-wallet/types";
 import "./home.css";
-import {useLocation} from "react-router-dom"
+import {Link, useHistory, useLocation} from "react-router-dom"
 import { config } from "../../config";
 import { SigningCosmosClient } from "@cosmjs/launchpad";
 import { setupWebKeplr } from "cosmwasm";
@@ -12,19 +12,17 @@ import {Login as LoginDesign} from "@cosmicdapp/design";
 
 
 
-export function Home() {
-    const navigate = useLocation();
+export default function Home() {
+ 
 
-  const addRoom = async () => {
-    navigate('/room/1')
-
-  };
 
   return (
     <div className="home-main-div">
       <h1>Tic-Tac-Toe</h1>
       <div className="buttons-div">
-        <button onClick={addRoom}>Add new room</button>
+        <Link to="/room/1">
+        <button >Add new room</button>
+        </Link>
         <button>Open existing one</button>
       </div>
     </div>

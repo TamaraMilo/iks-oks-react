@@ -1,10 +1,11 @@
 import React from "react";
 import { Coordinates } from "../../dtos/coordinates";
+import "./cell.css"
 
-export function Cell()
-{
+export default function Cell()
+{   
     
-    return(<div>
+    return(<div className="cell-div">
 
     </div>)
 }

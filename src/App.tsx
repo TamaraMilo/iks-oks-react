@@ -5,21 +5,20 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 import ReactDOM from "react-dom";
-import { Home } from "./pages/home/home";
+import Home  from "./pages/home/home";
 import { SdkProvider } from "@cosmicdapp/logic";
 import { config } from "./config";
-import { Room } from "./pages/room/room";
+import Room  from "./pages/room/room";
 
 function App() {
-  const [count, setCount] = useState(0);
-
+ 
   return (
     <div className="App">
       <SdkProvider config={config}>
         <Router>
-          <Switch>
-            <Route path="/" component={Home} />
-            <Route path="/room/:id" children={Room} />
+         <Switch>
+            <Route path="/" exact><Home /></Route>
+            <Route path="/room/:id" exact children={Room} />
           </Switch>
         </Router>
       </SdkProvider>
