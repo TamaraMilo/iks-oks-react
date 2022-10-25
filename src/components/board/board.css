@@ -1,8 +1,31 @@
-.board
-{
+.cells {
     display: grid;
     grid-row: 3;
     grid-column: 3;
     grid-template-columns: auto auto auto;
-    
+    grid-auto-rows: auto auto auto;
+    column-gap: 10px;
+    row-gap: 20px;
+
+}
+
+.board button {
+    margin-top: 1rem;
+    border: 1px solid black;
+    width: 11rem;
+
+}
+
+.board button:hover {
+    background-color: #e064ff;
+    color: white;
+    border: 1px solid white;
+}
+
+.board {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
 }

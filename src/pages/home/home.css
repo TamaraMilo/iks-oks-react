@@ -1,23 +1,47 @@
-.buttons-div
-{
+.buttons-div {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    width: 50rem;
 }
-.buttons-div button
-{
-    margin-top: 20px;
+
+.buttons-div button {
+    margin-top: 1rem;
+    width: 11rem;
     transition-duration: 5000ms;
 }
-.buttons-div button:hover
-{
+
+.buttons-div button:hover {
     background-color: #646cffaa;
-    
 }
-.home-main-div
-{
+
+.home-main-div {
     color: #4348a8;
     display: flex;
     flex-direction: column;
-    
-   
+}
+
+.inputRoomDiv {
+    width: 17rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.inputRoomDiv button {
+    margin: 0rem;
+    width: 5rem;
+}
+
+.inputRoomDiv input {
+    height: 2rem;
+    width: 10rem;
+    font-size: 1rem;
+}
+
+.inputRoomDiv input::placeholder {
+    color: #4348a8;
+    font-size: 1rem;
 }

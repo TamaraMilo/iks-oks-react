@@ -14,7 +14,11 @@
     "@cosmjs/launchpad": "^0.27.1",
     "@cosmjs/stargate": "^0.29.2",
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
+    "@fortawesome/free-regular-svg-icons": "^6.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@keplr-wallet/cosmos": "^0.11.11",
+    "babel-plugin-macros": "^3.1.0",
     "cosmwasm": "^1.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
