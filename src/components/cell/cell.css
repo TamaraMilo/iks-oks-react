@@ -8,7 +8,7 @@
 }
 
 .cell-div:hover {
-    background-color: #e064ff;
+    background-color: #4348a8;
     cursor: pointer;
 }
 
@@ -18,7 +18,8 @@
 }
 
 .cell-div-selected {
-    background-color: #e064ff;
+    background-color: #4348a8;
+    color: white;
     width: 80px;
     height: 80px;
     display: flex;

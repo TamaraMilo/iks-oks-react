@@ -1,4 +1,22 @@
-.room h1
+.room h1 {
+    color: #00C897;
+}
+
+.headline {
+    display: flex;
+    width: 20rem;
+    
+}
+.headline h1 {
+    align-self: center;
+}
+.home-icon
 {
-    color:#684caa;
+    align-self: center;
+    margin-right: 2rem;
+}
+.home-icon:hover
+{
+    cursor: pointer;
+    color: #857EB2;
 }

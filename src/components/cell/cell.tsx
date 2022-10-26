@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { faO } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
-import { Coordinates } from "../../dtos/coordinates";
+import { Coordinates } from "../../models/coordinates";
 import {
   solid,
   regular,
@@ -10,7 +10,7 @@ import {
   icon,
 } from "@fortawesome/fontawesome-svg-core/import.macro"; // <-- import styles to be used
 import "./cell.css";
-import { CellModel } from "../../dtos/cell";
+import { CellModel } from "../../models/cell";
 
 interface CellProps {
   celldata: CellModel;
@@ -18,6 +18,7 @@ interface CellProps {
   setSelectedCell: (params: any) => any;
   player: number;
   deselect: () => void;
+  gameEnded: boolean;
 }
 
 export default function Cell({
@@ -25,30 +26,37 @@ export default function Cell({
   setSelectedCell,
   player,
   selectedCell,
-  deselect
+  deselect,
+  gameEnded,
 }: CellProps): JSX.Element {
   const [selected, setSelected] = useState(false);
   const [played, setPlayed] = useState(false);
   const selectCell = () => {
-    
-    if(celldata.played) return;
+    if (gameEnded) return;
+    if (celldata.played) return;
     deselect();
- 
-    
     !celldata.selected ? setSelectedCell(celldata) : setSelectedCell(null);
-    console.log(celldata.selected)
+    console.log(celldata.selected);
     celldata.selected = !celldata.selected;
   };
-  useEffect(()=>{},[selectedCell])
+  useEffect(() => {}, [selectedCell]);
   return (
     <div
       className={celldata.selected ? "cell-div-selected" : "cell-div"}
       onClick={selectCell}
     >
-      {!celldata.played ? (celldata.selected && (player === 0 ?  <FontAwesomeIcon className="icons" icon={faX} />:<FontAwesomeIcon className="icons" icon={faO} /> ))
-      :
-      (celldata.simbol === "x" ? <FontAwesomeIcon className="icons" icon={faX} /> :  <FontAwesomeIcon className="icons" icon={faO} />)}
-    
+      {!celldata.played ? (
+        celldata.selected &&
+        (player === 0 ? (
+          <FontAwesomeIcon className="icons" icon={faX} />
+        ) : (
+          <FontAwesomeIcon className="icons" icon={faO} />
+        ))
+      ) : celldata.simbol === "x" ? (
+        <FontAwesomeIcon className="icons" icon={faX} />
+      ) : (
+        <FontAwesomeIcon className="icons" icon={faO} />
+      )}
     </div>
   );
 }
