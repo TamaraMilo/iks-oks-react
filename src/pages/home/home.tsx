@@ -1,38 +1,47 @@
 import React, { useEffect, useState } from "react";
-import { Window as KeplrWindow } from "@keplr-wallet/types";
 import "./home.css";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import { config } from "../../config";
-import { SigningCosmosClient } from "@cosmjs/launchpad";
-import { setupWebKeplr } from "cosmwasm";
-
-import { Login as LoginDesign } from "@cosmicdapp/design";
-import { wallet } from "../../wallet";
+import { useHistory } from "react-router-dom";
 import useSdk from "../../hooks/useclient";
 import Popup from "../../components/popup/popup";
+import Modal from "react-modal";
+import { coin, StdFee } from "cosmwasm";
+
 
 export default function Home() {
   const history = useHistory();
   const sdk = useSdk();
-  const [mnemonic, setMnemonic] = useState("");
-
+  const [mnemonic, setMnemonic] = useState<string>();
+  const [address, setAddress] = useState<string>();
   const [inputExistingRoom, setInputExistingRoom] = useState(false);
   const [roomNumber, setRoomNumber] = useState("");
   const [popUpContent, setPopUpContent] = useState<JSX.Element>();
   const [popUp, setPopUp] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const defaultFee: StdFee = { amount: [{amount: "200", denom: "umlg",},], gas: "200000",};
 
-  const togglePopUp = () => {
-    setPopUp(!popUp);
+
+  const modalToggle = () => {
+    setIsOpen(!isOpen);
+  }
+  const createClientAfterClose = async () => {
+    if (mnemonic === undefined || mnemonic === "" || address === undefined || address === "") {
+      return;
+    }
+    console.log(mnemonic);
+    const client = await sdk.createClient(mnemonic, address);
+    const res = await client.execute(sdk.getAddress()!, process.env.REACT_APP_CONTRACT_ADDR!, { add_room: { player1: "addr", player2: "addr2" } },defaultFee);
+    console.log(res)
+  }
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
   };
-  // const buttnoPopUpHandle = ()  => {
-  //   if(mnemonic === undefined){
-  //     return;
-  //   }
-  //   togglePopUp();
-  //   console.log(mnemonic)
-  //   const clinet = sdk.createClient(mnemonic);
-
-  // }
 
   const openExistingRoom = () => {
     history.push(`/room/${roomNumber}`);
@@ -46,19 +55,20 @@ export default function Home() {
     // //   "wasm1fqtyx9yf6ftzk3cg4c42gt363e3cfwt62pnqca",
     // //   "umlg"
     // // );
+    const client = sdk.getClient();
+    if (client === undefined)
+      modalToggle();
     // // console.log(balance);
 
-    // const client = sdk.getClient();
+
     // if(client === undefined)
     // {
     //   setPopUpContent(<div className="mneminic-input">
-    //     <input type="password" placeholder="mnemonic" onChange={(e)=>setMnemonic(e.target.value)}/>
+    //     <input type="password" placeholder="mnemonic" value={mnemonic} onChange={(e)=>setMnemonic(e.target.value)}/>
     //     <button onClick={buttnoPopUpHandle}>Done</button>
     //   </div>)
     //   togglePopUp();
     // }
-    history.push(`/room/1`);
-    history.goForward();
 
   };
 
@@ -84,7 +94,19 @@ export default function Home() {
             <button onClick={openExistingRoom}>Open</button>
           </div>
         )}
-        {popUp && <Popup content={popUpContent!} handleClose={togglePopUp} />}
+        <Modal
+          isOpen={isOpen}
+          onAfterClose={createClientAfterClose}
+          style={customStyles}
+        >
+          <div className="modal">
+            <h2 >Input mnemonic</h2>
+            <input type="password" value={mnemonic} onChange={(e) => { setMnemonic(e.target.value) }} />
+            <h2 >Input wallet address???</h2>
+            <input value={address} onChange={(e) => { setAddress(e.target.value) }} />
+            <button onClick={modalToggle}>Done</button>
+          </div>
+        </Modal>
       </div>
     </div>
   );

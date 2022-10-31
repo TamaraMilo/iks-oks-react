@@ -45,3 +45,9 @@
     color: #4348a8;
     font-size: 1rem;
 }
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
