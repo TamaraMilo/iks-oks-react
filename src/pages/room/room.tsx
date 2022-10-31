@@ -18,7 +18,7 @@ export default function Room() {
           className="home-icon"
           icon={faHouse}
           onClick={handleOnHouseClick}
-        />{" "}
+        />
         <h1>ROOM: {id}</h1>
       </span>
       <Board />

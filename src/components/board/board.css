@@ -18,8 +18,8 @@
 
 .board button:hover {
     background-color: #857EB2;
-    color: white;
-    border: 1px solid white;
+    color: #F8F9F9;
+    border: 1px solid #F8F9F9;
 }
 
 .board {
@@ -27,5 +27,6 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    color: #EF6785;
 
 }

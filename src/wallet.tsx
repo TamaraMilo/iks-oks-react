@@ -1,35 +1,29 @@
-import { setupNodeLocal, setupWebKeplr, SigningCosmWasmClient } from "cosmwasm";
-import { config } from "./config";
+import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
+import { Coin, SigningStargateClient } from "@cosmjs/stargate";
+import { CosmWasmClient } from "cosmwasm";
 
+const sender = {
+  mnemonic:
+    "prepare urban venture mixture behave warrior hope clump fat noodle fabric return rookie ginger cheese seed age prefer amount enlist wine brass economy neither",
+  address: "wasm1qjdjcfrur950ze2uu2wqv6fvvvdhglryqwgdlx",
+};
+const tendermintUrl = "https://rpc.malaga-420.cosmwasm.com:443";
+// (async () => {
+// const wallet = await DirectSecp256k1HdWallet.fromMnemonic(sender.mnemonic);
+// const client = await SigningStargateClient.connectWithSigner(tendermintUrl, wallet);
+// const before = await client.getBalance(sender.address, "uatom");
+// console.log(before);
+// })();
 
-export class Client 
-{
-    private static wallet: SigningCosmWasmClient;
+export async function wallet() {
+  const wallet = await DirectSecp256k1HdWallet.fromMnemonic(sender.mnemonic);
+  const client = await CosmWasmClient.connect(tendermintUrl);
+  
+  console.log(
+    await client.getBalance(
+      "wasm1f0fclqu37dzncjnn47jqnjck5wqls0pd9wpydu",
+      "umlg"
+    )
+  );
 
-
-    private constructor(){}
-
-
-    public static async getClient()
-    {
-        if(!Client.wallet)
-        {
-            const configKeplr = {
-                chainId: config.chainId,
-                rpcEndpoint: config.rpcUrl,
-                prefix: config.addressPrefix
-            }
-            const client = await setupNodeLocal(configKeplr,"opinion edge core uncle teach scan stock bargain borrow square champion lock");
-            console.log(client)
-            this.wallet = client;
-        }
-        return this.wallet;
-    }
 }
-
-
-
-
-
-
-

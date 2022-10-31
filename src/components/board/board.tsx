@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Coordinates } from "../../models/coordinates";
-  import {CellModel} from "../../models/cell";
+import { CellModel } from "../../models/cell";
 import Cell from "../cell/cell";
 import "./board.css";
 import Popup from "../popup/popup";
@@ -11,9 +11,9 @@ export default function Board() {
   const [player, setPlayer] = useState(0);
   const [noMoves, setNoMoves] = useState(0);
   const [gameState, setGameState] = useState(GameState.InProgress);
-  const [tiePopUp, setTiePopup] = useState(false);
-  const [winPopup, setWinPopup] = useState(false);
+  const [popUp, setPopup] = useState(false);
   const [gameEnded, setGameEnded] = useState(false);
+  const [popUpContent, setPopUpContent] = useState<JSX.Element>()
 
   const [board, setBoard] = useState<CellModel[][]>([
     [
@@ -47,7 +47,7 @@ export default function Board() {
         coordinates: { x: 1, y: 1 },
         played: false,
         simbol: "",
-        selected:false,
+        selected: false,
       },
       {
         coordinates: { x: 1, y: 2 },
@@ -78,12 +78,10 @@ export default function Board() {
     ],
   ]);
 
-  const toggleTiePopup = () => {
-    setTiePopup(!tiePopUp);
+  const togglePopup = () => {
+    setPopup(!popUp);
   };
-  const toggleWinPopup = () => {
-    setWinPopup(!winPopup);
-  };
+
   const handlePlayMove = () => {
     if (!GameState.InProgress) {
       return;
@@ -96,17 +94,23 @@ export default function Board() {
     selectedCell.played = true;
     selectedCell.simbol = player === 0 ? "x" : "o";
     setNoMoves(noMoves + 1);
+    deselect();
     if (checkForWin(selectedCell)) {
       setGameState(GameState.Won);
-      toggleWinPopup();
+      setPopUpContent(<div>
+           <h1>Player: {player + 1} won!</h1>
+      </div>)
+      togglePopup();
       setGameEnded(true);
-      console.log(true);
       return;
     }
     if (noMoves === 8 && gameState === GameState.InProgress) {
       setGameState(GameState.Tie);
       setGameEnded(true);
-      toggleTiePopup();
+      setPopUpContent(<div>
+        <h1>Game ended in a tie!</h1>
+      </div>)
+      togglePopup();
       return;
     }
     setPlayer((player + 1) % 2);
@@ -124,49 +128,121 @@ export default function Board() {
   const checkForWin = (cell: CellModel) => {
     const win_lines: Coordinates[][][] = [
       [
-        [{x:0, y:1}, {x:0, y:2}],
-        [{x:1, y:1}, {x:2,y:2}],
-        [{x:1,y:0}, {x:2,y:0}],
+        [
+          { x: 0, y: 1 },
+          { x: 0, y: 2 },
+        ],
+        [
+          { x: 1, y: 1 },
+          { x: 2, y: 2 },
+        ],
+        [
+          { x: 1, y: 0 },
+          { x: 2, y: 0 },
+        ],
       ],
       [
-        [{x:0,y:0}, {x:0,y:2}],
-        [{x:1,y:1}, {x:2,y:1}],
+        [
+          { x: 0, y: 0 },
+          { x: 0, y: 2 },
+        ],
+        [
+          { x: 1, y: 1 },
+          { x: 2, y: 1 },
+        ],
       ],
       [
-        [{x:0,y:0}, {x:0,y:1}],
-        [{x:1,y:1}, {x:2,y:0}],
-        [{x:1,y:2},{x:2,y:2}],
+        [
+          { x: 0, y: 0 },
+          { x: 0, y: 1 },
+        ],
+        [
+          { x: 1, y: 1 },
+          { x: 2, y: 0 },
+        ],
+        [
+          { x: 1, y: 2 },
+          { x: 2, y: 2 },
+        ],
       ],
       [
-        [{x:1,y:1}, {x:1,y:2}],
-        [{x:0,y:0}, {x:2,y:0}],
+        [
+          { x: 1, y: 1 },
+          { x: 1, y: 2 },
+        ],
+        [
+          { x: 0, y: 0 },
+          { x: 2, y: 0 },
+        ],
       ],
       [
-        [{x:1,y:0}, {x:1,y:2}],
-        [{x:0,y:0}, {x:2,y:2}],
-        [{x:0,y:2}, {x:2,y:0}],
-        [{x:0,y:1}, {x:2,y:1}],
+        [
+          { x: 1, y: 0 },
+          { x: 1, y: 2 },
+        ],
+        [
+          { x: 0, y: 0 },
+          { x: 2, y: 2 },
+        ],
+        [
+          { x: 0, y: 2 },
+          { x: 2, y: 0 },
+        ],
+        [
+          { x: 0, y: 1 },
+          { x: 2, y: 1 },
+        ],
       ],
       [
-        [{x:1,y:0}, {x:1,y:1}],
-        [{x:0,y:2}, {x:2,y:2}],
+        [
+          { x: 1, y: 0 },
+          { x: 1, y: 1 },
+        ],
+        [
+          { x: 0, y: 2 },
+          { x: 2, y: 2 },
+        ],
       ],
       [
-        [{x:2,y:1}, {x:2,y:2}],
-        [{x:0,y:2}, {x:1,y:1}],
-        [{x:0,y:0}, {x:1,y:0}],
+        [
+          { x: 2, y: 1 },
+          { x: 2, y: 2 },
+        ],
+        [
+          { x: 0, y: 2 },
+          { x: 1, y: 1 },
+        ],
+        [
+          { x: 0, y: 0 },
+          { x: 1, y: 0 },
+        ],
       ],
       [
-        [{x:2,y:0}, {x:2,y:2}],
-        [{x:0,y:1}, {x:1,y:1}],
+        [
+          { x: 2, y: 0 },
+          { x: 2, y: 2 },
+        ],
+        [
+          { x: 0, y: 1 },
+          { x: 1, y: 1 },
+        ],
       ],
       [
-        [{x:2,y:0}, {x:2,y:1}],
-        [{x:0,y:1}, {x:1,y:1}],
-        [{x:0,y:2}, {x:1,y:2}],
+        [
+          { x: 2, y: 0 },
+          { x: 2, y: 1 },
+        ],
+        [
+          { x: 0, y: 0 },
+          { x: 1, y: 1 },
+        ],
+        [
+          { x: 0, y: 2 },
+          { x: 1, y: 2 },
+        ],
       ],
     ];
-    let last_move: number = cell.coordinates!.x * 3+ cell.coordinates!.y;
+    let last_move: number = cell.coordinates!.x * 3 + cell.coordinates!.y;
     let player_simbol = board[cell.coordinates!.x][cell.coordinates!.y].simbol;
     for (let i = 0; i < win_lines[last_move].length; i++) {
       let line = win_lines[last_move][i].length;
@@ -217,29 +293,14 @@ export default function Board() {
           });
         })}
       </div>
-
-      {!gameEnded && <button onClick={handlePlayMove}> Play Move</button>}
+      {!gameEnded && (
+        <button disabled={selectedCell ? false : true} onClick={handlePlayMove}>
+          {" "}
+          Play Move
+        </button>
+      )}
       {gameEnded && <button onClick={restartGame}>Restart game</button>}
-      {tiePopUp && (
-        <Popup
-          content={
-            <>
-              <h1>Game ended in a tie!</h1>
-            </>
-          }
-          handleClose={toggleTiePopup}
-        />
-      )}
-      {winPopup && (
-        <Popup
-          content={
-            <>
-              <h1>Player: {player + 1} won!</h1>
-            </>
-          }
-          handleClose={toggleWinPopup}
-        />
-      )}
+      {popUp && <Popup  content={popUpContent!}  handleClose={togglePopup}/>}
     </div>
   );
 }
